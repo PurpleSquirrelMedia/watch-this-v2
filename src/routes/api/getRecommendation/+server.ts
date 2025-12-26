@@ -1,8 +1,8 @@
 import { createParser } from 'eventsource-parser';
-import { OPENAI_API_KEY, KV_REST_API_URL, KV_REST_API_TOKEN } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import { createClient } from '@vercel/kv';
 
-const key = OPENAI_API_KEY;
+const key = env.OPENAI_API_KEY || '';
 
 // Object to store the number of requests made by each user and their last request timestamp
 interface UserRequestData {
@@ -11,8 +11,8 @@ interface UserRequestData {
 }
 
 const kv = createClient({
-	url: KV_REST_API_URL,
-	token: KV_REST_API_TOKEN
+	url: env.KV_REST_API_URL || '',
+	token: env.KV_REST_API_TOKEN || ''
 });
 
 async function getUserRequestData(userIP: string): Promise<UserRequestData | null> {
